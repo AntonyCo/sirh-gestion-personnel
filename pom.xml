@@ -32,5 +32,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	</dependencies>
 	<build>
 		<finalName>sgp</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+	      </resource>
+    	</resources>
 	</build>
 </project>
