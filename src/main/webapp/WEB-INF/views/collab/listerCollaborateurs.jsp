@@ -72,7 +72,7 @@
 					</div>
 					<div class="row" style="margin-top: 5px;">
 						<img class="col-lg-4"
-							src="<%=getServletContext().getContextPath()%>/photo_defaut.png"
+							src="<%=request.getContextPath()+"/"+c.getPhoto()%>"
 							style="width: 100px; margin: 2px 0 0 5px;" alt="Profil" />
 						<div class="col-lg-4">
 							<p style="margin-bottom: 0px;">Fonction</p>
@@ -87,7 +87,7 @@
 							<p style="margin-bottom: 0px;"><%=c.getMatricule()%></p>
 						</div>
 					</div>
-					<a  style="margin: 0 30px 5px 0" href="/editer?<%=""+c.getMatricule() %>" class="btn btn-info pull-right" role="button" aria-pressed="true">Editer</a>
+					<a  style="margin: 0 30px 5px 0" href="editer?<%="matricule="+c.getMatricule() %>" class="btn btn-info pull-right" role="button" aria-pressed="true">Editer</a>
 				</div>
 			</div>
 			<%

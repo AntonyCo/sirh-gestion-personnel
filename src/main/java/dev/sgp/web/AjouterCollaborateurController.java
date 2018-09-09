@@ -95,6 +95,7 @@ public class AjouterCollaborateurController extends HttpServlet {
 			collaborateur.setActif(true);
 			collaborateur.setIntitulePoste(intitulePoste);
 			collaborateur.setCivilite(civilite);
+			collaborateur.setPhoto("photo_defaut.png");
 
 			DepartementService departements = new DepartementService();
 			collaborateur.setDepartement(departements.getListeDepartement().get(numDepartement));
