@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dev.sgp.entite.Collaborateur;
 import dev.sgp.service.CollaborateurService;
+import dev.sgp.service.DepartementService;
 import dev.sgp.util.Constantes;
 import dev.sgp.util.Outils;
 
@@ -34,7 +35,9 @@ public class AjouterCollaborateurController extends HttpServlet {
 		String dateNaissance = req.getParameter("date_naissance");
 		String adresse = req.getParameter("adresse").trim();
 		String numeroSecuriteSociale = req.getParameter("num_securite_sociale");
-
+		String intitulePoste = req.getParameter("poste");
+		Integer numDepartement = Integer.valueOf(req.getParameter("departement"));
+		String civilite = req.getParameter("civilite");
 		List<String> listeErreur = new ArrayList<>();
 		boolean estErreur = false;
 
@@ -66,7 +69,7 @@ public class AjouterCollaborateurController extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp").forward(req, resp);
 		} else {
 			Collaborateur collaborateur = new Collaborateur();
-			String matricule = "M" + Collaborateur.getCpt();
+			String matricule = "M" + String.format("%03d", Collaborateur.getCpt());
 			Collaborateur.setCpt(Collaborateur.getCpt() + 1);
 			ZonedDateTime dateHeureCreation = ZonedDateTime.now();
 			String suffixe = Outils.getApplicationPropertiesParam("suffixe",
@@ -82,7 +85,11 @@ public class AjouterCollaborateurController extends HttpServlet {
 			collaborateur.setEmailPro(emailPro);
 			collaborateur.setMatricule(matricule);
 			collaborateur.setActif(true);
+			collaborateur.setIntitulePoste(intitulePoste);
+			collaborateur.setCivilite(civilite);
 
+			DepartementService departements = new DepartementService();
+			collaborateur.setDepartement(departements.getListeDepartement().get(numDepartement));
 			collabService.sauvegarderCollaborateur(collaborateur);
 
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
