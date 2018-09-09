@@ -1,9 +1,10 @@
 package dev.sgp.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,78 +20,82 @@ import dev.sgp.util.Outils;
 
 public class AjouterCollaborateurController extends HttpServlet {
 	private CollaborateurService collabService = Constantes.COLLAB_SERVICE;
-	
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
-	ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setAttribute("listeNoms", Arrays.asList("Robert", "Jean", "Hugues"));
-		req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp")
-		.forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp").forward(req, resp);
 	}
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws
-	ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String nom = req.getParameter("nom");
 		String prenom = req.getParameter("prenom");
 		String dateNaissance = req.getParameter("date_naissance");
 		String adresse = req.getParameter("adresse").trim();
-		String numeroSecuriteSociale = req.getParameter("numero_securite_sociale");
-		
-		StringBuilder chaineErreur = new StringBuilder();
+		String numeroSecuriteSociale = req.getParameter("num_securite_sociale");
+
+		List<String> listeErreur = new ArrayList<>();
 		boolean estErreur = false;
-		
-		if(nom == null || nom.trim().equals("")){
-			chaineErreur.append("Erreur sur le nom !").append(System.getProperty("line.separator"));
+
+		if (nom == null || nom.trim().equals("")) {
+			listeErreur.add("Erreur sur le nom !");
 			estErreur = true;
 		}
-		if(prenom == null || prenom.trim().equals("")){
-			chaineErreur.append("Erreur sur le prenom !").append(System.getProperty("line.separator"));
+		if (prenom == null || prenom.trim().equals("")) {
+			listeErreur.add("Erreur sur le prenom !");
 			estErreur = true;
 		}
-		if(dateNaissance == null || dateNaissance.trim().equals("")){
-			chaineErreur.append("Erreur sur la date de naissance !").append(System.getProperty("line.separator"));
+		if (dateNaissance == null || dateNaissance.trim().equals("")) {
+			listeErreur.add("Erreur sur la date de naissance !");
 			estErreur = true;
 		}
-		if(adresse == null || adresse.trim().equals("")){
-			chaineErreur.append("Erreur sur l'adresse !").append(System.getProperty("line.separator"));
+		if (adresse == null || adresse.trim().equals("")) {
+			listeErreur.add("Erreur sur l'adresse !");
 			estErreur = true;
 		}
-		if(numeroSecuriteSociale == null || numeroSecuriteSociale.trim().equals("") || numeroSecuriteSociale.length() != 15){
-			chaineErreur.append("Erreur sur le numéro de sécurité sociale !").append(System.getProperty("line.separator"));
+		if (numeroSecuriteSociale == null || numeroSecuriteSociale.trim().equals("")
+				|| numeroSecuriteSociale.length() != 15) {
+			listeErreur.add("Erreur sur le numéro de sécurité sociale !");
 			estErreur = true;
 		}
-		
-		if(estErreur == false){
+
+		if (estErreur) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			req.setAttribute("liste_erreur", listeErreur);
+			req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp").forward(req, resp);
+		} else {
 			Collaborateur collaborateur = new Collaborateur();
-			String matricule = "M"+Collaborateur.getCpt();
+			String matricule = "M" + Collaborateur.getCpt();
 			Collaborateur.setCpt(Collaborateur.getCpt() + 1);
 			ZonedDateTime dateHeureCreation = ZonedDateTime.now();
-			String suffixe = Outils.getApplicationPropertiesParam("suffixe", "src/main/resources/application.properties");
-			String emailPro = nom+"."+prenom+suffixe;
-			
+			String suffixe = Outils.getApplicationPropertiesParam("suffixe",
+					"src/main/resources/application.properties");
+			String emailPro = nom.toLowerCase() + "." + prenom.toLowerCase() + "@" + suffixe;
+
 			collaborateur.setNom(nom);
 			collaborateur.setPrenom(prenom);
-			collaborateur.setDateNaissance(LocalDate.parse(dateNaissance));
+			collaborateur.setDateNaissance(LocalDate.parse(dateNaissance, DateTimeFormatter.ISO_DATE));
 			collaborateur.setAdresse(adresse);
 			collaborateur.setNumeroSecuriteSociale(numeroSecuriteSociale);
 			collaborateur.setDateHeureCreation(dateHeureCreation);
 			collaborateur.setEmailPro(emailPro);
 			collaborateur.setMatricule(matricule);
 			collaborateur.setActif(true);
-			
+
 			collabService.sauvegarderCollaborateur(collaborateur);
-			req.getRequestDispatcher("/WEB-INF/views/collab/listerCollaborateurs.jsp")
-			.forward(req, resp);
-		}else{
-			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			req.setAttribute("chaine_erreur", chaineErreur);
-			req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp")
-			.forward(req, resp);
+
+			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+			req.setAttribute("liste_collaborateurs", collabService.listerCollaborateurs());
+			resp.sendRedirect("lister");
+			// req.getRequestDispatcher("/WEB-INF/views/collab/listerCollaborateurs.jsp").forward(req,
+			// resp);
 		}
 	}
-		
+
 }
 /*
-En cas d’erreurs de saisie, toutes les erreurs sont indiquées avec un code de reponse 400.
-Lorsque la sauvegarde a eu lieu, l’utilisateur est redirigé vers la liste des collaborateurs.
-Une photo fictive est affectée par défaut.*/
+ * En cas d’erreurs de saisie, toutes les erreurs sont indiquées avec un code de
+ * reponse 400. Lorsque la sauvegarde a eu lieu, l’utilisateur est redirigé vers
+ * la liste des collaborateurs. Une photo fictive est affectée par défaut.
+ */
