@@ -5,6 +5,10 @@ import java.util.List;
 
 import dev.sgp.entite.Collaborateur;
 
+/**
+ * @author Antony
+ *
+ */
 public class CollaborateurService {
 	List<Collaborateur> listeCollaborateurs = new ArrayList<>();
 

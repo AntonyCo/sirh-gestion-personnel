@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * @author Antony
+ *
+ */
 public class Outils {
 
 	public static String getApplicationPropertiesParam(String param, String filePath) {

@@ -19,6 +19,10 @@ import dev.sgp.service.DepartementService;
 import dev.sgp.util.Constantes;
 import dev.sgp.util.Outils;
 
+/**
+ * @author Antony
+ *
+ */
 public class AjouterCollaborateurController extends HttpServlet {
 	private CollaborateurService collabService = Constantes.COLLAB_SERVICE;
 
@@ -55,6 +59,10 @@ public class AjouterCollaborateurController extends HttpServlet {
 		}
 		if (adresse == null || adresse.trim().equals("")) {
 			listeErreur.add("Erreur sur l'adresse !");
+			estErreur = true;
+		}
+		if (intitulePoste == null || intitulePoste.trim().equals("")) {
+			listeErreur.add("Erreur sur l'intitulé du poste !");
 			estErreur = true;
 		}
 		if (numeroSecuriteSociale == null || numeroSecuriteSociale.trim().equals("")
@@ -95,14 +103,7 @@ public class AjouterCollaborateurController extends HttpServlet {
 			resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 			req.setAttribute("liste_collaborateurs", collabService.listerCollaborateurs());
 			resp.sendRedirect("lister");
-			// req.getRequestDispatcher("/WEB-INF/views/collab/listerCollaborateurs.jsp").forward(req,
-			// resp);
 		}
 	}
 
 }
-/*
- * En cas d’erreurs de saisie, toutes les erreurs sont indiquées avec un code de
- * reponse 400. Lorsque la sauvegarde a eu lieu, l’utilisateur est redirigé vers
- * la liste des collaborateurs. Une photo fictive est affectée par défaut.
- */

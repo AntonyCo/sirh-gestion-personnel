@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@page import="dev.sgp.entite.Collaborateur"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
+<!-- @author Antony -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,20 +15,19 @@
 <body>
 	<div class="container-fluid">
 		<h1>Les collaborateurs</h1>
-		<form method="post" action="">
+		<form method="post" action="lister">
 			<div class="form-group row">
 				<label for="nom" class="col-lg-3 col-form-label">Rechercher
 					un nom ou un prénom qui commence par:</label>
 				<div class="col-lg-2">
-					<input class="form-control" type="text" id="nom" name="nom"
-						value="" />
+					<input class="form-control" type="text" id="filtre_nom" name="filtre_nom"/>
 				</div>
 
 				<div class="col-lg-1">
 					<input type="submit" value="Rechercher" style="width: 120px"
 						class="btn btn-primary pull-right" />
 				</div>
-				<label class="checkbox-inline"><input type="checkbox"
+				<label class="checkbox-inline"><input type="checkbox" name="voir_desactive"
 					value="">Voir les collaborateurs désactivés</label>
 			</div>
 
@@ -35,7 +35,8 @@
 				<label for="nom" class="col-lg-3 col-form-label">Filtrer par
 					département :</label>
 				<div class="col-lg-2">
-					<select name="cars" class="form-control">
+					<select name="departement" class="form-control">
+						<option value="tous">Tous</option>
 						<%
 							DepartementService departements = new DepartementService();
 							for (Departement d : departements.getListeDepartement()) {
@@ -59,9 +60,15 @@
 			<div class="col-lg-4" style="margin-bottom: 20px">
 				<div class="clearfix"
 					style="background-color: rgb(0, 0, 0, 0.05); border-radius: 5px; box-shadow: 0px 1px 4px;">
-					<div
-						style="background-color: rgb(0, 0, 0, 0.1); padding: 2px 0 1px 10px; box-shadow: 0px 1px 4px">
-						<p><%=c.getCivilite()+" "+c.getNom().toUpperCase() + " " + c.getPrenom()%></p>
+					<div style="background-color: rgb(0, 0, 0, 0.1); padding: 2px 0 1px 10px; box-shadow: 0px 1px 4px">
+						<div class="row">
+							<p class="col-lg-10"><%=c.getCivilite()+" "+c.getNom().toUpperCase() + " " + c.getPrenom()%></p>
+							<%if(c.isActif()){%>
+								<p class="col-lg-2"style="color:green">Actif</p>
+							<%}else{%>
+								<p class="col-lg-2"style="color:red">Inactif</p>
+							<%} %>
+						</div>
 					</div>
 					<div class="row" style="margin-top: 5px;">
 						<img class="col-lg-4"

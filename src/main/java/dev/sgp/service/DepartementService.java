@@ -5,6 +5,10 @@ import java.util.List;
 
 import dev.sgp.entite.Departement;
 
+/**
+ * @author Antony
+ *
+ */
 public class DepartementService {
 
 	List<Departement> listeDepartement;

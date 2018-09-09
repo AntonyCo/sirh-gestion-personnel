@@ -1,5 +1,9 @@
 package dev.sgp.entite;
 
+/**
+ * @author Antony
+ *
+ */
 public class Departement {
 	private Integer id;
 	private String nom;

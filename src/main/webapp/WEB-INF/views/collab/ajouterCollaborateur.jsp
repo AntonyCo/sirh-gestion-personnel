@@ -2,6 +2,8 @@
 <%@page import="dev.sgp.service.DepartementService"%>
 <%@page import="dev.sgp.entite.Departement"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
+
+<!-- @author Antony -->
 <!DOCTYPE html>
 <html>
 	<head>
