@@ -1,18 +1,18 @@
 <%@page import="java.util.List"%>
 <%@page import="dev.sgp.service.DepartementService"%>
 <%@page import="dev.sgp.entite.Departement"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
-
+<%@page language="java" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page isELIgnored="false"%>
 <!-- @author Antony -->
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>SGP - App</title>
-		<link rel="stylesheet" href="<%=request.getContextPath()%>/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<link rel="stylesheet" href="<c:url value="/bootstrap-3.3.7-dist/css/bootstrap.css"/>">
 	</head>
 	<body>
-	
 		<div class="container">
 			 <h1>Ajouter un collaborateur</h1>
 			 <br/><br/>
@@ -67,13 +67,9 @@
 		                <label for="departement" class="col-lg-2 col-form-label">Département</label>
 						<div class="col-lg-5">
 							<select name="departement" class="form-control">
-								<%DepartementService departements = new DepartementService(); 
-			                	 	for(Departement d : departements.getListeDepartement()){
-			                	 %>
-								<option value="<%=d.getId() %>"><%=d.getNom() %></option>
-								<%
-					        	 	}
-								 %>
+								<c:forEach items="${liste_departements}" var="d">
+									<option value="${d.getId()}">${d.getNom()}</option>  
+								</c:forEach>
 							</select>
 						</div>
 					</div>
@@ -95,16 +91,11 @@
 			</form>
 			
 			<div>
-				<%
-				List<String> listeErreur = (List<String>) request.getAttribute("liste_erreur");
-				if(listeErreur != null){
-					for(String s : listeErreur){
-				%>
-					<p style="color:red"><%=s%></p>
-				<%
-					}
-				}
-				%>
+			<c:if test="${liste_erreur != null}">
+				<c:forEach items="${liste_erreur}" var="s">
+					<p style="color:red">${s}</p>
+				</c:forEach>
+			</c:if>
 			</div>
 		</div>
 	</body>

@@ -23,7 +23,7 @@ public class EditerCollaborateurController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	// recupere la valeur d'un parametre dont le nom est matricule
 	String matricule = req.getParameter("matricule");
-
+	DepartementService departements = new DepartementService();
 	Collaborateur collaborateur = null;
 	for (Collaborateur c : collabService.listerCollaborateurs()) {
 	    if (c.getMatricule().equals(matricule)) {
@@ -36,6 +36,7 @@ public class EditerCollaborateurController extends HttpServlet {
 	} else {
 	    resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 	    req.setAttribute("collaborateur", collaborateur);
+	    req.setAttribute("liste_departements", departements.getListeDepartement());
 	    req.getRequestDispatcher("/WEB-INF/views/collab/editerCollaborateur.jsp").forward(req, resp);
 	}
 
@@ -59,7 +60,7 @@ public class EditerCollaborateurController extends HttpServlet {
 
 	String matricule = req.getParameter("matricule");
 	boolean aDesactiver = req.getParameter("desactive") != null;
-
+	DepartementService departements = new DepartementService();
 	// On récupère le collaborateur via son matricule
 	Collaborateur collaborateur = null;
 	for (Collaborateur c : collabService.listerCollaborateurs()) {
@@ -83,7 +84,6 @@ public class EditerCollaborateurController extends HttpServlet {
 		collaborateur.setTelephone(telephone);
 	    }
 	    if (collaborateur.getDepartement().getId() != numDepartement) {
-		DepartementService departements = new DepartementService();
 		collaborateur.setDepartement(departements.getListeDepartement().get(numDepartement));
 	    }
 	    if (collaborateur.getIntitulePoste().equals(intitulePoste) == false) {
@@ -104,6 +104,8 @@ public class EditerCollaborateurController extends HttpServlet {
 		collaborateur.setActif(true);
 	    }
 	    resp.setStatus(HttpServletResponse.SC_ACCEPTED);
+	    req.setAttribute("collaborateur", collaborateur);
+	    req.setAttribute("liste_departements", departements.getListeDepartement());
 	    resp.sendRedirect("lister");
 	}
     }

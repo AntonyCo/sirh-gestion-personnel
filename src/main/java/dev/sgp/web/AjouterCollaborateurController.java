@@ -29,6 +29,8 @@ public class AjouterCollaborateurController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	req.setAttribute("listeNoms", Arrays.asList("Robert", "Jean", "Hugues"));
+	DepartementService departements = new DepartementService();
+	req.setAttribute("liste_departements", departements.getListeDepartement());
 	req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp").forward(req, resp);
     }
 
@@ -44,6 +46,7 @@ public class AjouterCollaborateurController extends HttpServlet {
 	String civilite = req.getParameter("civilite");
 	List<String> listeErreur = new ArrayList<>();
 	boolean estErreur = false;
+	DepartementService departements = new DepartementService();
 
 	if (nom == null || nom.trim().equals("")) {
 	    listeErreur.add("Erreur sur le nom !");
@@ -74,6 +77,7 @@ public class AjouterCollaborateurController extends HttpServlet {
 	if (estErreur) {
 	    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    req.setAttribute("liste_erreur", listeErreur);
+	    req.setAttribute("liste_departements", departements.getListeDepartement());
 	    req.getRequestDispatcher("/WEB-INF/views/collab/ajouterCollaborateur.jsp").forward(req, resp);
 	} else {
 	    Collaborateur collaborateur = new Collaborateur();
@@ -95,18 +99,18 @@ public class AjouterCollaborateurController extends HttpServlet {
 	    collaborateur.setActif(true);
 	    collaborateur.setIntitulePoste(intitulePoste);
 	    collaborateur.setCivilite(civilite);
-	    collaborateur.setPhoto("photo_defaut.png");
+	    collaborateur.setPhoto(req.getContextPath() + "/" + "photo_defaut.png");
 	    collaborateur.setTelephone("");
 	    collaborateur.setBanque("");
 	    collaborateur.setBic("");
 	    collaborateur.setIban("");
 
-	    DepartementService departements = new DepartementService();
 	    collaborateur.setDepartement(departements.getListeDepartement().get(numDepartement));
 	    collabService.sauvegarderCollaborateur(collaborateur);
 
 	    resp.setStatus(HttpServletResponse.SC_ACCEPTED);
 	    req.setAttribute("liste_collaborateurs", collabService.listerCollaborateurs());
+	    req.setAttribute("liste_departements", departements.getListeDepartement());
 	    resp.sendRedirect("lister");
 	}
     }

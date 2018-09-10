@@ -2,13 +2,15 @@
 <%@page import="dev.sgp.service.DepartementService"%>
 <%@page import="dev.sgp.entite.Departement"%>
 <%@page import="dev.sgp.entite.Collaborateur"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page isELIgnored="false"%>
+<!-- @author Antony -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>SGP - App</title>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/bootstrap-3.3.7-dist/css/bootstrap.css">
+<link rel="stylesheet" href="<c:url value="/bootstrap-3.3.7-dist/css/bootstrap.css"/>">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script
@@ -22,16 +24,22 @@
 	<div class="container">
 		<div class="row">
 			<img class="col-lg-2"
-				src="<%=request.getContextPath() + "/" + c.getPhoto()%>"
+				src="${collaborateur.getPhoto()}"
 				style="width: 250px; margin: 2px 0 0 5px;" alt="Profil" />
 			<div class="col-lg-9">
 				<form method="post" action="editer">
 					<div class="row">
-						<h1 class="col-lg-8"><%=c.getNom().toUpperCase() + " " + c.getPrenom() + " - " + c.getMatricule()%></h1>
+						<h1 class="col-lg-8">${collaborateur.getNom().toUpperCase()} ${collaborateur.getPrenom()} ${collaborateur.getMatricule()}</h1>
 
 						<fieldset>
-							<label class="checkbox col-lg-4" style="margin-top: 30px"><input
-								<%=((c.isActif() ? "" : "checked")) %> type="checkbox" name="desactive" value="">Désactiver</label>
+							<label class="checkbox col-lg-4" style="margin-top: 30px">
+								<c:if test="${collaborateur.isActif() == true}">
+									<input type="checkbox" name="desactive" value="">
+								</c:if>
+								<c:if test="${collaborateur.isActif() == false}">
+									<input checked type="checkbox" name="desactive" value="">
+								</c:if>
+							Désactiver</label>
 						</fieldset>
 					</div>
 
@@ -50,15 +58,21 @@
 									<label for="civilite" class="col-lg-2 col-form-label">Civilité</label>
 									<div class="col-lg-8">
 										<select name="civilite" class="form-control">
-											<option
-												<%=(c.getCivilite().equals("Mr.") ? "selected" : "")%>
-												value="Mr.">Mr.</option>
-											<option
-												<%=(c.getCivilite().equals("Mme.") ? "selected" : "")%>
-												value="Mme.">Mme.</option>
-											<option
-												<%=(c.getCivilite().equals("Autre") ? "selected" : "")%>
-												value="Autre">Autre</option>
+											<c:if test='${collaborateur.getCivilite().equals("Mr.")}'>
+												<option selected value="Mr.">Mr.</option>
+												<option value="Mme.">Mme.</option>
+												<option value="Autre">Autre</option>
+											</c:if>
+											<c:if test='${collaborateur.getCivilite().equals("Mme.")}'>
+												<option  value="Mr.">Mr.</option>
+												<option selected value="Mme.">Mme.</option>
+												<option value="Autre">Autre</option>
+											</c:if>
+											<c:if test='${collaborateur.getCivilite().equals("Autre")}'>
+												<option  value="Mr.">Mr.</option>
+												<option value="Mme.">Mme.</option>
+												<option selected value="Autre">Autre</option>
+											</c:if>
 										</select>
 									</div>
 								</div>
@@ -67,7 +81,7 @@
 									<label for="nom" class="col-lg-2 col-form-label">Nom</label>
 									<div class="col-lg-8">
 										<input class="form-control" type="text" id="nom" name="nom"
-											readonly value="<%=c.getNom()%>" />
+											readonly value="${collaborateur.getNom()}" />
 									</div>
 								</div>
 
@@ -75,7 +89,7 @@
 									<label for="prenom" class="col-lg-2 col-form-label">Prenom</label>
 									<div class="col-lg-8">
 										<input class="form-control" type="text" id="prenom" readonly
-											name="prenom" value="<%=c.getPrenom()%>" size="20"
+											name="prenom" value="${collaborateur.getPrenom()}" size="20"
 											maxlength="20" />
 									</div>
 								</div>
@@ -87,7 +101,7 @@
 										<input class="form-control" type="date" id="date_naissance"
 											readonly name="date_naissance" maxlength="10"
 											placeholder="01/01/1970"
-											value="<%=c.getDateNaissance().toString()%>" size="20"
+											value="${collaborateur.getDateNaissance().toString()}" size="20"
 											maxlength="20" />
 									</div>
 								</div>
@@ -96,7 +110,7 @@
 									<label for="adresse" class="col-lg-2 col-form-label">Adresse</label>
 									<div class="col-lg-8">
 										<textarea class="form-control" name="adresse" id="adresse"
-											required style="resize: none" rows="5" cols="20"><%=c.getAdresse()%></textarea>
+											required style="resize: none" rows="5" cols="20">${collaborateur.getAdresse()}</textarea>
 									</div>
 								</div>
 
@@ -107,7 +121,7 @@
 									<div class="col-lg-8">
 										<input class="form-control" type="text" readonly
 											id="num_securite_sociale" name="num_securite_sociale"
-											value="<%=c.getNumeroSecuriteSociale()%>" size="20"
+											value="${collaborateur.getNumeroSecuriteSociale()}" size="20"
 											maxlength="20" />
 									</div>
 								</div>
@@ -116,7 +130,7 @@
 									<label for="telephone" class="col-lg-2 col-form-label">Téléphone</label>
 									<div class="col-lg-8">
 										<input class="form-control" type="text" id="telephone"
-											name="telephone" value="" size="20" maxlength="20" />
+											name="telephone" value="${collaborateur.getTelephone()}" size="20" maxlength="20" />
 									</div>
 								</div>
 							</fieldset>
@@ -161,7 +175,7 @@
 										poste</label>
 									<div class="col-lg-8">
 										<input class="form-control" type="text" id="poste"
-											name="poste" value="<%=c.getIntitulePoste()%>" size="20"
+											name="poste" value="${collaborateur.getIntitulePoste()}" size="20"
 											maxlength="20" />
 									</div>
 								</div>
@@ -186,7 +200,7 @@
 										<div class="col-lg-8">
 											<input class="form-control" type="text" id="banque"
 												name="banque"
-												value="<%=((c.getBanque() == null) ? "" : c.getBanque())%>"
+												value="${collaborateur.getBanque()}"
 												size="20" maxlength="20" />
 										</div>
 									</div>
@@ -194,7 +208,7 @@
 										<label for="bic" class="col-lg-2 col-form-label">Bic</label>
 										<div class="col-lg-8">
 											<input class="form-control" type="text" id="bic" name="bic"
-												value="<%=((c.getBic() == null) ? "" : c.getBic())%>"
+												value="${collaborateur.getBic()}"
 												size="20" maxlength="20" />
 										</div>
 									</div>
@@ -202,7 +216,7 @@
 										<label for="iban" class="col-lg-2 col-form-label">Iban</label>
 										<div class="col-lg-8">
 											<input class="form-control" type="text" id="iban" name="iban"
-												value="<%=((c.getIban() == null) ? "" : c.getIban())%>"
+												value="${collaborateur.getIban()}"
 												size="20" maxlength="20" />
 										</div>
 									</div>
@@ -210,7 +224,7 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="matricule" value="<%=c.getMatricule()%>">
+					<input type="hidden" name="matricule" value="${collaborateur.getMatricule()}">
 					<div class="form-group row">
 						<div class="col-lg-12">
 							<input type="submit" value="Sauvegarder" style="width: 120px"
