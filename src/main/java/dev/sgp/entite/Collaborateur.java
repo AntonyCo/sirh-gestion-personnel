@@ -8,161 +8,169 @@ import java.time.ZonedDateTime;
  *
  */
 public class Collaborateur {
-	private String matricule;
-	private String nom;
-	private String prenom;
-	private LocalDate dateNaissance;
-	private String adresse;
-	private String numeroSecuriteSociale;
-	private String emailPro;
-	private String photo;
-	private ZonedDateTime dateHeureCreation;
-	private boolean actif;
+    private String matricule;
+    private String nom;
+    private String prenom;
+    private LocalDate dateNaissance;
+    private String adresse;
+    private String numeroSecuriteSociale;
+    private String emailPro;
+    private String photo;
+    private ZonedDateTime dateHeureCreation;
+    private boolean actif;
+    private String telephone;
+    private String civilite;
+    private String intitulePoste;
+    private Departement departement;
 
-	private String civilite;
-	private String intitulePoste;
-	private Departement departement;
+    private String banque;
+    private String bic;
+    private String iban;
 
-	private String banque;
-	private String bic;
-	private String iban;
+    private static int cpt = 0;
 
-	private static int cpt = 0;
+    public String getMatricule() {
+	return matricule;
+    }
 
-	public String getMatricule() {
-		return matricule;
-	}
+    public void setMatricule(String matricule) {
+	this.matricule = matricule;
+    }
 
-	public void setMatricule(String matricule) {
-		this.matricule = matricule;
-	}
+    public String getNom() {
+	return nom;
+    }
 
-	public String getNom() {
-		return nom;
-	}
+    public void setNom(String nom) {
+	this.nom = nom;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public String getPrenom() {
+	return prenom;
+    }
 
-	public String getPrenom() {
-		return prenom;
-	}
+    public void setPrenom(String prenom) {
+	this.prenom = prenom;
+    }
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
+    public LocalDate getDateNaissance() {
+	return dateNaissance;
+    }
 
-	public LocalDate getDateNaissance() {
-		return dateNaissance;
-	}
+    public void setDateNaissance(LocalDate dateNaissance) {
+	this.dateNaissance = dateNaissance;
+    }
 
-	public void setDateNaissance(LocalDate dateNaissance) {
-		this.dateNaissance = dateNaissance;
-	}
+    public String getAdresse() {
+	return adresse;
+    }
 
-	public String getAdresse() {
-		return adresse;
-	}
+    public void setAdresse(String adresse) {
+	this.adresse = adresse;
+    }
 
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
-	}
+    public String getNumeroSecuriteSociale() {
+	return numeroSecuriteSociale;
+    }
 
-	public String getNumeroSecuriteSociale() {
-		return numeroSecuriteSociale;
-	}
+    public void setNumeroSecuriteSociale(String numeroSecuriteSociale) {
+	this.numeroSecuriteSociale = numeroSecuriteSociale;
+    }
 
-	public void setNumeroSecuriteSociale(String numeroSecuriteSociale) {
-		this.numeroSecuriteSociale = numeroSecuriteSociale;
-	}
+    public String getEmailPro() {
+	return emailPro;
+    }
 
-	public String getEmailPro() {
-		return emailPro;
-	}
+    public void setEmailPro(String emailPro) {
+	this.emailPro = emailPro;
+    }
 
-	public void setEmailPro(String emailPro) {
-		this.emailPro = emailPro;
-	}
+    public String getPhoto() {
+	return photo;
+    }
 
-	public String getPhoto() {
-		return photo;
-	}
+    public void setPhoto(String photo) {
+	this.photo = photo;
+    }
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
+    public ZonedDateTime getDateHeureCreation() {
+	return dateHeureCreation;
+    }
 
-	public ZonedDateTime getDateHeureCreation() {
-		return dateHeureCreation;
-	}
+    public void setDateHeureCreation(ZonedDateTime dateHeureCreation) {
+	this.dateHeureCreation = dateHeureCreation;
+    }
 
-	public void setDateHeureCreation(ZonedDateTime dateHeureCreation) {
-		this.dateHeureCreation = dateHeureCreation;
-	}
+    public boolean isActif() {
+	return actif;
+    }
 
-	public boolean isActif() {
-		return actif;
-	}
+    public void setActif(boolean actif) {
+	this.actif = actif;
+    }
 
-	public void setActif(boolean actif) {
-		this.actif = actif;
-	}
+    public static int getCpt() {
+	return cpt;
+    }
 
-	public static int getCpt() {
-		return cpt;
-	}
+    public static void setCpt(int cpt) {
+	Collaborateur.cpt = cpt;
+    }
 
-	public static void setCpt(int cpt) {
-		Collaborateur.cpt = cpt;
-	}
+    public String getIntitulePoste() {
+	return intitulePoste;
+    }
 
-	public String getIntitulePoste() {
-		return intitulePoste;
-	}
+    public void setIntitulePoste(String intitulePoste) {
+	this.intitulePoste = intitulePoste;
+    }
 
-	public void setIntitulePoste(String intitulePoste) {
-		this.intitulePoste = intitulePoste;
-	}
+    public Departement getDepartement() {
+	return departement;
+    }
 
-	public Departement getDepartement() {
-		return departement;
-	}
+    public void setDepartement(Departement departement) {
+	this.departement = departement;
+    }
 
-	public void setDepartement(Departement departement) {
-		this.departement = departement;
-	}
+    public String getCivilite() {
+	return civilite;
+    }
 
-	public String getCivilite() {
-		return civilite;
-	}
+    public void setCivilite(String civilite) {
+	this.civilite = civilite;
+    }
 
-	public void setCivilite(String civilite) {
-		this.civilite = civilite;
-	}
+    public String getBanque() {
+	return banque;
+    }
 
-	public String getBanque() {
-		return banque;
-	}
+    public void setBanque(String banque) {
+	this.banque = banque;
+    }
 
-	public void setBanque(String banque) {
-		this.banque = banque;
-	}
+    public String getBic() {
+	return bic;
+    }
 
-	public String getBic() {
-		return bic;
-	}
+    public void setBic(String bic) {
+	this.bic = bic;
+    }
 
-	public void setBic(String bic) {
-		this.bic = bic;
-	}
+    public String getIban() {
+	return iban;
+    }
 
-	public String getIban() {
-		return iban;
-	}
+    public void setIban(String iban) {
+	this.iban = iban;
+    }
 
-	public void setIban(String iban) {
-		this.iban = iban;
-	}
+    public String getTelephone() {
+	return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+	this.telephone = telephone;
+    }
 
 }
