@@ -38,14 +38,9 @@
 				<div class="col-lg-2">
 					<select name="departement" class="form-control">
 						<option value="tous">Tous</option>
-						<%
-							DepartementService departements = new DepartementService();
-							for (Departement d : departements.getListeDepartement()) {
-						%>
-						<option value="<%=d.getId()%>"><%=d.getNom()%></option>
-						<%
-							}
-						%>
+							<c:forEach items="${liste_departements}" var="d">
+							<option value="${d.getId()}">${d.getNom()}</option>
+						</c:forEach>
 					</select>
 				</div>
 			</div>
@@ -53,48 +48,42 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<%
-				List<Collaborateur> liste = (List<Collaborateur>) request.getAttribute("liste_collaborateurs");
-				if (liste != null) {
-					for (Collaborateur c : liste) {
-			%>
-			<div class="col-lg-4" style="margin-bottom: 20px">
-				<div class="clearfix"
-					style="background-color: rgb(0, 0, 0, 0.05); border-radius: 5px; box-shadow: 0px 1px 4px;">
-					<div style="background-color: rgb(0, 0, 0, 0.1); padding: 2px 0 1px 10px; box-shadow: 0px 1px 4px">
-						<div class="row">
-							<p class="col-lg-10"><%=c.getCivilite()+" "+c.getNom().toUpperCase() + " " + c.getPrenom()%></p>
-							<%if(c.isActif()){%>
-								<p class="col-lg-2"style="color:green">Actif</p>
-							<%}else{%>
-								<p class="col-lg-2"style="color:red">Inactif</p>
-							<%} %>
+			<c:forEach items="${liste_collaborateurs}" var="c">
+				<div class="col-lg-4" style="margin-bottom: 20px">
+					<div class="clearfix"
+						style="background-color: rgb(0, 0, 0, 0.05); border-radius: 5px; box-shadow: 0px 1px 4px;">
+						<div style="background-color: rgb(0, 0, 0, 0.1); padding: 2px 0 1px 10px; box-shadow: 0px 1px 4px">
+							<div class="row">
+								<p class="col-lg-10">${c.getCivilite()} ${c.getNom().toUpperCase()} ${c.getPrenom()}</p>
+								<c:if test="${c.isActif() == true}">
+									<p class="col-lg-2"style="color:green">Actif</p>
+								</c:if>
+								<c:if test="${c.isActif() == false}">
+									<p class="col-lg-2"style="color:red">Inactif</p>
+								</c:if>
+							</div>
 						</div>
+						<div class="row" style="margin-top: 5px;">
+							<img class="col-lg-4"
+								src="${c.getPhoto()}"
+								style="width: 100px; margin: 2px 0 0 5px;" alt="Profil" />
+							<div class="col-lg-4">
+								<p style="margin-bottom: 0px;">Fonction</p>
+								<p style="margin-bottom: 0px;">Département</p>
+								<p style="margin-bottom: 0px;">Email</p>
+								<p style="margin-bottom: 0px;">Matricule</p>
+							</div>
+							<div class="col-lg-4">
+								<p style="margin-bottom: 0px;">${c.getIntitulePoste()}</p>
+								<p style="margin-bottom: 0px;">${c.getDepartement().getNom()}</p>
+								<p style="margin-bottom: 0px;">${c.getEmailPro()}</p>
+								<p style="margin-bottom: 0px;">${c.getMatricule()}</p>
+							</div>
+						</div>
+						<a  style="margin: 0 30px 5px 0" href="editer?matricule=${c.getMatricule()}" class="btn btn-info pull-right" role="button" aria-pressed="true">Editer</a>
 					</div>
-					<div class="row" style="margin-top: 5px;">
-						<img class="col-lg-4"
-							src="<%=request.getContextPath()+"/"+c.getPhoto()%>"
-							style="width: 100px; margin: 2px 0 0 5px;" alt="Profil" />
-						<div class="col-lg-4">
-							<p style="margin-bottom: 0px;">Fonction</p>
-							<p style="margin-bottom: 0px;">Département</p>
-							<p style="margin-bottom: 0px;">Email</p>
-							<p style="margin-bottom: 0px;">Matricule</p>
-						</div>
-						<div class="col-lg-4">
-							<p style="margin-bottom: 0px;"><%=c.getIntitulePoste()%></p>
-							<p style="margin-bottom: 0px;"><%=c.getDepartement().getNom()%></p>
-							<p style="margin-bottom: 0px;"><%=c.getEmailPro()%></p>
-							<p style="margin-bottom: 0px;"><%=c.getMatricule()%></p>
-						</div>
-					</div>
-					<a  style="margin: 0 30px 5px 0" href="editer?<%="matricule="+c.getMatricule() %>" class="btn btn-info pull-right" role="button" aria-pressed="true">Editer</a>
 				</div>
-			</div>
-			<%
-				}
-				}
-			%>
+			</c:forEach>
 		</div>
 	</div>
 </body>

@@ -17,10 +17,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<%
-	    Collaborateur c = (Collaborateur) request.getAttribute("collaborateur");
-	    request.setAttribute("test", "test");
-	%>
 	<div class="container">
 		<div class="row">
 			<img class="col-lg-2"
@@ -151,21 +147,14 @@
 									<label for="departement" class="col-lg-2 col-form-label">Département</label>
 									<div class="col-lg-8">
 										<select name="departement" class="form-control">
-											<%
-											    DepartementService departements = new DepartementService();
-											    for (Departement d : departements.getListeDepartement()) {
-													if (c.getDepartement().getId() == d.getId()) {
-											%>
-											<option selected="selected" value="<%=d.getId()%>"><%=d.getNom()%></option>
-											<%
-											    } else {
-											%>
-
-											<option value="<%=d.getId()%>"><%=d.getNom()%></option>
-											<%
-											    }
-											    }
-											%>
+											<c:forEach items="${liste_departements}" var="d">
+												<c:if test="${collaborateur.getDepartement().getId() == d.getId() }">
+													<option selected="selected" value="${d.getId()}">${d.getNom()}</option>
+												</c:if>
+												<c:if test="${collaborateur.getDepartement().getId() != d.getId() }">
+													<option value="${d.getId()}">${d.getNom()}</option>
+												</c:if>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
